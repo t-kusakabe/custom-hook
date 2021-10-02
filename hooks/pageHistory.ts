@@ -1,9 +1,17 @@
 import { useState } from 'react';
 
+interface PageHistory {
+  Top: () => void;
+  Next: () => void;
+  Back: () => void;
+  Last: () => void;
+  Reset: () => void;
+}
+
 export const usePageHistory = (
   topPage: number,
   lastPage: number,
-): [number, () => void, () => void, () => void, () => void, () => void] => {
+): [number, PageHistory] => {
   const initHistory: number[] = [topPage];
   const [history, setHistory] = useState<number[]>(initHistory);
 
@@ -53,11 +61,13 @@ export const usePageHistory = (
 
   return [
     currentPage,
-    Top,
-    Next,
-    Back,
-    Last,
-    Reset,
+    {
+      Top,
+      Next,
+      Back,
+      Last,
+      Reset,
+    },
   ];
 };
 
