@@ -1,6 +1,6 @@
 import { useStack } from 'hooks/stack';
 
-interface PageHistory {
+export interface PageHistory {
   Top: () => void;
   Next: () => void;
   Back: () => void;

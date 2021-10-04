@@ -1,16 +1,22 @@
 import { useState } from 'react';
 
-import { usePageHistory } from 'hooks/pageHistory';
+import { PageHistory, usePageHistory } from 'hooks/pageHistory';
 
-const Index: React.FC = () => {
+const PageContainer: React.FC = () => {
   const topPage = 1;
   const lastPage = 4;
 
-  const [currentPage, history] = usePageHistory(
-    topPage,
-    lastPage,
-  );
+  const [currentPage, history] = usePageHistory(topPage, lastPage);
 
+  return <Page currentPage={currentPage} history={history} />;
+};
+
+interface PageProps {
+  currentPage: number;
+  history: PageHistory;
+}
+
+const Page: React.FC<PageProps> = ({ currentPage, history }: PageProps) => {
   return (
     <div>
       <div>現在のページ: {currentPage}</div>
@@ -23,4 +29,4 @@ const Index: React.FC = () => {
   );
 };
 
-export default Index;
+export default PageContainer;
