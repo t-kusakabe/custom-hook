@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useStack } from 'hooks/stack';
 
 interface PageHistory {
   Top: () => void;
@@ -13,17 +13,14 @@ export const usePageHistory = (
   lastPage: number,
 ): [number, PageHistory] => {
   const initHistory: number[] = [topPage];
-  const [history, setHistory] = useState<number[]>(initHistory);
-
-  const currentPage = history[history.length - 1];
+  const [currentPage, stack] = useStack<number>(initHistory);
 
   const Top = (): void => {
     if (currentPage === topPage) {
       return;
     }
 
-    const nextHistory = [...history, topPage];
-    setHistory(nextHistory);
+    stack.Push(topPage);
   };
 
   const Next = (): void => {
@@ -33,30 +30,27 @@ export const usePageHistory = (
       return;
     }
 
-    const nextHistory = [...history, nextPage];
-    setHistory(nextHistory);
+    stack.Push(nextPage);
   };
 
   const Back = (): void => {
-    if (history.length <= 1) {
+    if (stack.Length() <= 1) {
       return;
     }
 
-    const nextHistory = [...history.slice(0, history.length - 1)];
-    setHistory(nextHistory);
+    stack.Pop();
   };
 
   const Last = (): void => {
     if (currentPage === lastPage) {
       return;
     }
-    
-    const nextHistory = [...history, lastPage];
-    setHistory(nextHistory);
+
+    stack.Push(lastPage);
   };
 
   const Reset = (): void => {
-    setHistory(initHistory);
+    stack.Reset();
   };
 
   return [
